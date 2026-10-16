@@ -1,0 +1,6 @@
+fatal: No names found, cannot describe anything.
+golangci-lint run
+0 issues.
+
+Tagged acceptance lint:
+0 issues.

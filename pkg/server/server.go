@@ -20,8 +20,9 @@ type Server struct {
 	udpEntryPoints   UDPEntryPoints
 	observabilityMgr *middleware.ObservabilityMgr
 
-	signals  chan os.Signal
-	stopChan chan bool
+	shutdownHooks []func()
+	signals       chan os.Signal
+	stopChan      chan bool
 
 	routinesPool *safe.Pool
 }
@@ -68,6 +69,9 @@ func (s *Server) Wait() {
 // Stop stops the server.
 func (s *Server) Stop() {
 	defer log.Info().Msg("Server stopped")
+	for _, hook := range s.shutdownHooks {
+		hook()
+	}
 
 	s.tcpEntryPoints.Stop()
 	s.udpEntryPoints.Stop()

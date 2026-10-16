@@ -405,6 +405,7 @@ nav:
       - 'Security': 'contributing/submitting-security-issues.md'
       - 'Security Decisions': 'contributing/security-decisions.md'
       - 'Building and Testing': 'contributing/building-testing.md'
+      - 'Grayling Gateway Fork': 'contributing/gogw.md'
       - 'Documentation':
           - 'Building Documentation': 'contributing/documentation.md'
           - 'Style Guide': 'contributing/documentation-style-guide.md'

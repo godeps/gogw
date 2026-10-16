@@ -1,0 +1,159 @@
+fatal: No names found, cannot describe anything.
+go test -race -count=1 -timeout=90s -v ./pkg/gogw/...
+=== RUN   TestLocalAndSingleHop
+{"level":"debug","time":"2026-10-16T16:31:03+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:03+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:03+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:03+08:00","message":"Service selected by WRR: stable"}
+--- PASS: TestLocalAndSingleHop (0.22s)
+=== RUN   TestUntrustedRequests
+--- PASS: TestUntrustedRequests (0.14s)
+=== RUN   TestSSECancelAndDrain
+{"level":"debug","time":"2026-10-16T16:31:04+08:00","message":"Service selected by WRR: canary"}
+--- PASS: TestSSECancelAndDrain (0.15s)
+=== RUN   TestUpdatesRollbackAndFailures
+{"level":"debug","time":"2026-10-16T16:31:04+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:04+08:00","message":"Service selected by WRR: canary"}
+--- PASS: TestUpdatesRollbackAndFailures (0.26s)
+=== RUN   TestControlDisconnectAndHealth
+{"level":"debug","time":"2026-10-16T16:31:04+08:00","message":"Service selected by WRR: canary"}
+--- PASS: TestControlDisconnectAndHealth (1.05s)
+=== RUN   TestStableBuckets
+{"level":"debug","time":"2026-10-16T16:31:05+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:05+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:05+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:05+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:05+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:05+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:05+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:05+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:05+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:05+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:05+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:05+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:05+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:06+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:06+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:06+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:06+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:06+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:06+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:06+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:06+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:06+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:06+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:06+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:06+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:06+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:06+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:06+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:06+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:06+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:06+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:06+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:06+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:06+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:06+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:06+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:06+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:06+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:06+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:06+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:06+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:06+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:06+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:06+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:06+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:06+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:06+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:06+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:06+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:06+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:06+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:06+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:06+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:06+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:06+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:06+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:06+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:06+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:06+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:06+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:06+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:06+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:06+08:00","message":"Service selected by WRR: canary"}
+--- PASS: TestStableBuckets (1.15s)
+=== RUN   TestBootMismatch
+{"level":"debug","time":"2026-10-16T16:31:06+08:00","message":"Service selected by WRR: canary"}
+--- PASS: TestBootMismatch (0.15s)
+=== RUN   TestExpiredView
+--- PASS: TestExpiredView (1.62s)
+=== RUN   TestPersistedView
+--- PASS: TestPersistedView (0.09s)
+=== RUN   TestTicketBindings
+=== RUN   TestTicketBindings/generation
+=== RUN   TestTicketBindings/path
+=== RUN   TestTicketBindings/host
+=== RUN   TestTicketBindings/issuer-boot
+=== RUN   TestTicketBindings/scope
+=== RUN   TestTicketBindings/method
+=== RUN   TestTicketBindings/audience
+=== RUN   TestTicketBindings/hop
+=== RUN   TestTicketBindings/final
+=== RUN   TestTicketBindings/expired
+=== RUN   TestTicketBindings/valid
+=== RUN   TestTicketBindings/boot
+=== RUN   TestTicketBindings/build
+=== RUN   TestTicketBindings/bundle
+--- PASS: TestTicketBindings (0.19s)
+    --- PASS: TestTicketBindings/generation (0.03s)
+    --- PASS: TestTicketBindings/path (0.01s)
+    --- PASS: TestTicketBindings/host (0.01s)
+    --- PASS: TestTicketBindings/issuer-boot (0.00s)
+    --- PASS: TestTicketBindings/scope (0.01s)
+    --- PASS: TestTicketBindings/method (0.01s)
+    --- PASS: TestTicketBindings/audience (0.00s)
+    --- PASS: TestTicketBindings/hop (0.00s)
+    --- PASS: TestTicketBindings/final (0.01s)
+    --- PASS: TestTicketBindings/expired (0.01s)
+    --- PASS: TestTicketBindings/valid (0.01s)
+    --- PASS: TestTicketBindings/boot (0.01s)
+    --- PASS: TestTicketBindings/build (0.01s)
+    --- PASS: TestTicketBindings/bundle (0.01s)
+=== RUN   TestUntrustedPolicyKey
+--- PASS: TestUntrustedPolicyKey (0.12s)
+=== RUN   TestTrustedIPAndViewReplacement
+{"level":"debug","time":"2026-10-16T16:31:08+08:00","message":"Service selected by WRR: canary"}
+--- PASS: TestTrustedIPAndViewReplacement (0.15s)
+=== RUN   TestScaleAndAmbiguousWrites
+{"level":"debug","time":"2026-10-16T16:31:09+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:09+08:00","message":"Service selected by WRR: canary-2"}
+{"level":"debug","time":"2026-10-16T16:31:09+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:09+08:00","message":"Service selected by WRR: canary-2"}
+{"level":"debug","time":"2026-10-16T16:31:09+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:09+08:00","message":"Service selected by WRR: canary-2"}
+{"level":"debug","time":"2026-10-16T16:31:09+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:09+08:00","message":"Service selected by WRR: canary-2"}
+{"level":"debug","time":"2026-10-16T16:31:09+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:09+08:00","message":"Service selected by WRR: canary-2"}
+{"level":"debug","time":"2026-10-16T16:31:09+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:09+08:00","message":"Service selected by WRR: canary-2"}
+{"level":"debug","time":"2026-10-16T16:31:09+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:09+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:09+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:09+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:09+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:09+08:00","message":"Service selected by WRR: canary"}
+{"level":"debug","time":"2026-10-16T16:31:09+08:00","message":"Service selected by WRR: canary"}
+--- PASS: TestScaleAndAmbiguousWrites (0.38s)
+=== RUN   TestStreamingRequest
+{"level":"debug","time":"2026-10-16T16:31:09+08:00","message":"Service selected by WRR: canary"}
+--- PASS: TestStreamingRequest (0.14s)
+PASS
+ok  	github.com/traefik/traefik/v3/pkg/gogw	6.987s
+?   	github.com/traefik/traefik/v3/pkg/gogw/mock	[no test files]
+go test -race -count=1 -v ./pkg/server/service -run TestExtensionBuilder
+=== RUN   TestExtensionBuilder
+--- PASS: TestExtensionBuilder (0.00s)
+PASS
+ok  	github.com/traefik/traefik/v3/pkg/server/service	1.173s

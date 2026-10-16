@@ -210,3 +210,5 @@ fmt:
 help: Makefile
 	@echo " Choose a command run in traefik:"
 	@sed -n 's/^#?//p' $< | column -t -s ':' |  sort | sed -e 's/^/ /'
+
+include Makefile.gogw

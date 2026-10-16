@@ -1,0 +1,147 @@
+ok  	github.com/traefik/traefik/v3/pkg/api	1.164s	coverage: 77.6% of statements
+ok  	github.com/traefik/traefik/v3/pkg/api/dashboard	(cached)	coverage: 45.7% of statements
+ok  	github.com/traefik/traefik/v3/pkg/cli	(cached)	coverage: 77.1% of statements
+ok  	github.com/traefik/traefik/v3/pkg/collector	(cached)	coverage: 43.5% of statements
+	github.com/traefik/traefik/v3/pkg/collector/hydratation		coverage: 0.0% of statements
+ok  	github.com/traefik/traefik/v3/pkg/config/dynamic	(cached)	coverage: 27.3% of statements
+ok  	github.com/traefik/traefik/v3/pkg/config/kv	(cached)	coverage: 90.7% of statements
+ok  	github.com/traefik/traefik/v3/pkg/config/label	(cached)	coverage: 71.4% of statements
+ok  	github.com/traefik/traefik/v3/pkg/config/runtime	(cached)	coverage: 60.2% of statements
+ok  	github.com/traefik/traefik/v3/pkg/config/static	(cached)	coverage: 62.0% of statements
+ok  	github.com/traefik/traefik/v3/pkg/gogw	3.283s	coverage: 76.4% of statements
+	github.com/traefik/traefik/v3/pkg/gogw/mock		coverage: 0.0% of statements
+ok  	github.com/traefik/traefik/v3/pkg/healthcheck	5.562s	coverage: 69.6% of statements
+ok  	github.com/traefik/traefik/v3/pkg/ip	(cached)	coverage: 94.7% of statements
+ok  	github.com/traefik/traefik/v3/pkg/job	(cached)	coverage: 100.0% of statements
+	github.com/traefik/traefik/v3/pkg/middlewares		coverage: 0.0% of statements
+ok  	github.com/traefik/traefik/v3/pkg/middlewares/accesslog	1.719s	coverage: 87.7% of statements
+ok  	github.com/traefik/traefik/v3/pkg/middlewares/addprefix	(cached)	coverage: 90.9% of statements
+ok  	github.com/traefik/traefik/v3/pkg/middlewares/auth	0.318s	coverage: 84.1% of statements
+ok  	github.com/traefik/traefik/v3/pkg/middlewares/buffering	(cached)	coverage: 71.4% of statements
+ok  	github.com/traefik/traefik/v3/pkg/middlewares/capture	(cached)	coverage: 65.5% of statements
+	github.com/traefik/traefik/v3/pkg/middlewares/chain		coverage: 0.0% of statements
+	github.com/traefik/traefik/v3/pkg/middlewares/circuitbreaker		coverage: 0.0% of statements
+ok  	github.com/traefik/traefik/v3/pkg/middlewares/compress	0.257s	coverage: 82.7% of statements
+ok  	github.com/traefik/traefik/v3/pkg/middlewares/contenttype	(cached)	coverage: 80.0% of statements
+ok  	github.com/traefik/traefik/v3/pkg/middlewares/customerrors	(cached)	coverage: 65.2% of statements
+ok  	github.com/traefik/traefik/v3/pkg/middlewares/denyrouterrecursion	(cached)	coverage: 86.7% of statements
+ok  	github.com/traefik/traefik/v3/pkg/middlewares/encodedcharacters	(cached)	coverage: 87.5% of statements
+ok  	github.com/traefik/traefik/v3/pkg/middlewares/forwardedheaders	(cached)	coverage: 93.6% of statements
+ok  	github.com/traefik/traefik/v3/pkg/middlewares/gatewayapi/headermodifier	(cached)	coverage: 92.3% of statements
+ok  	github.com/traefik/traefik/v3/pkg/middlewares/gatewayapi/redirect	(cached)	coverage: 89.1% of statements
+ok  	github.com/traefik/traefik/v3/pkg/middlewares/gatewayapi/urlrewrite	(cached)	coverage: 84.6% of statements
+	github.com/traefik/traefik/v3/pkg/middlewares/grpcweb		coverage: 0.0% of statements
+ok  	github.com/traefik/traefik/v3/pkg/middlewares/headers	(cached)	coverage: 93.8% of statements
+	github.com/traefik/traefik/v3/pkg/middlewares/inflightreq		coverage: 0.0% of statements
+ok  	github.com/traefik/traefik/v3/pkg/middlewares/ingressnginx	(cached)	coverage: 95.0% of statements
+ok  	github.com/traefik/traefik/v3/pkg/middlewares/ingressnginx/approot	(cached)	coverage: 91.7% of statements
+ok  	github.com/traefik/traefik/v3/pkg/middlewares/ingressnginx/authtlspasscertificatetoupstream	(cached)	coverage: 86.3% of statements
+ok  	github.com/traefik/traefik/v3/pkg/middlewares/ingressnginx/rewritetarget	0.267s	coverage: 84.1% of statements
+ok  	github.com/traefik/traefik/v3/pkg/middlewares/ingressnginx/snippet	0.112s	coverage: 76.4% of statements
+ok  	github.com/traefik/traefik/v3/pkg/middlewares/ingressnginx/upstreamvhost	(cached)	coverage: 85.7% of statements
+ok  	github.com/traefik/traefik/v3/pkg/middlewares/ipallowlist	(cached)	coverage: 87.9% of statements
+ok  	github.com/traefik/traefik/v3/pkg/middlewares/ipwhitelist	(cached)	coverage: 86.2% of statements
+ok  	github.com/traefik/traefik/v3/pkg/middlewares/metrics	(cached)	coverage: 29.6% of statements
+ok  	github.com/traefik/traefik/v3/pkg/middlewares/observability	(cached)	coverage: 44.1% of statements
+ok  	github.com/traefik/traefik/v3/pkg/middlewares/passtlsclientcert	(cached)	coverage: 93.9% of statements
+ok  	github.com/traefik/traefik/v3/pkg/middlewares/ratelimiter	4.088s	coverage: 68.5% of statements
+ok  	github.com/traefik/traefik/v3/pkg/middlewares/ratelimiter/ttlmap	(cached)	coverage: 98.1% of statements
+ok  	github.com/traefik/traefik/v3/pkg/middlewares/recovery	0.037s	coverage: 67.5% of statements
+ok  	github.com/traefik/traefik/v3/pkg/middlewares/redirect	(cached)	coverage: 96.8% of statements
+ok  	github.com/traefik/traefik/v3/pkg/middlewares/replacepath	0.079s	coverage: 70.6% of statements
+ok  	github.com/traefik/traefik/v3/pkg/middlewares/replacepathregex	0.061s	coverage: 82.8% of statements
+ok  	github.com/traefik/traefik/v3/pkg/middlewares/requestdecorator	(cached)	coverage: 85.5% of statements
+ok  	github.com/traefik/traefik/v3/pkg/middlewares/retry	1.122s	coverage: 83.0% of statements
+	github.com/traefik/traefik/v3/pkg/middlewares/snicheck		coverage: 0.0% of statements
+ok  	github.com/traefik/traefik/v3/pkg/middlewares/stripprefix	(cached)	coverage: 93.5% of statements
+ok  	github.com/traefik/traefik/v3/pkg/middlewares/stripprefixregex	(cached)	coverage: 93.0% of statements
+ok  	github.com/traefik/traefik/v3/pkg/middlewares/tap	0.084s	coverage: 92.1% of statements
+ok  	github.com/traefik/traefik/v3/pkg/middlewares/tcp/inflightconn	(cached)	coverage: 84.6% of statements
+ok  	github.com/traefik/traefik/v3/pkg/middlewares/tcp/ipallowlist	(cached)	coverage: 100.0% of statements
+ok  	github.com/traefik/traefik/v3/pkg/middlewares/tcp/ipwhitelist	(cached)	coverage: 100.0% of statements
+ok  	github.com/traefik/traefik/v3/pkg/muxer	(cached)	coverage: 71.4% of statements
+ok  	github.com/traefik/traefik/v3/pkg/muxer/http	(cached)	coverage: 89.0% of statements
+ok  	github.com/traefik/traefik/v3/pkg/muxer/tcp	(cached)	coverage: 92.9% of statements
+ok  	github.com/traefik/traefik/v3/pkg/observability	(cached)	coverage: 61.1% of statements
+ok  	github.com/traefik/traefik/v3/pkg/observability/logs	8.085s	coverage: 58.0% of statements
+ok  	github.com/traefik/traefik/v3/pkg/observability/metrics	26.322s	coverage: 83.7% of statements
+ok  	github.com/traefik/traefik/v3/pkg/observability/tracing	70.131s	coverage: 32.4% of statements
+ok  	github.com/traefik/traefik/v3/pkg/observability/types	(cached)	coverage: 1.9% of statements
+	github.com/traefik/traefik/v3/pkg/ping		coverage: 0.0% of statements
+ok  	github.com/traefik/traefik/v3/pkg/plugins	(cached)	coverage: 45.1% of statements
+ok  	github.com/traefik/traefik/v3/pkg/provider	(cached)	coverage: 56.7% of statements
+ok  	github.com/traefik/traefik/v3/pkg/provider/acme	(cached)	coverage: 19.0% of statements
+ok  	github.com/traefik/traefik/v3/pkg/provider/aggregator	(cached)	coverage: 19.4% of statements
+ok  	github.com/traefik/traefik/v3/pkg/provider/constraints	(cached)	coverage: 90.2% of statements
+ok  	github.com/traefik/traefik/v3/pkg/provider/consulcatalog	(cached)	coverage: 44.7% of statements
+ok  	github.com/traefik/traefik/v3/pkg/provider/docker	(cached)	coverage: 59.0% of statements
+ok  	github.com/traefik/traefik/v3/pkg/provider/ecs	(cached)	coverage: 40.9% of statements
+ok  	github.com/traefik/traefik/v3/pkg/provider/file	(cached)	coverage: 78.3% of statements
+ok  	github.com/traefik/traefik/v3/pkg/provider/http	1.037s	coverage: 86.5% of statements
+ok  	github.com/traefik/traefik/v3/pkg/provider/kubernetes/crd	(cached)	coverage: 77.8% of statements
+	github.com/traefik/traefik/v3/pkg/provider/kubernetes/crd/generated/applyconfiguration		coverage: 0.0% of statements
+	github.com/traefik/traefik/v3/pkg/provider/kubernetes/crd/generated/applyconfiguration/internal		coverage: 0.0% of statements
+	github.com/traefik/traefik/v3/pkg/provider/kubernetes/crd/generated/applyconfiguration/traefikio/v1alpha1		coverage: 0.0% of statements
+	github.com/traefik/traefik/v3/pkg/provider/kubernetes/crd/generated/clientset/versioned		coverage: 0.0% of statements
+	github.com/traefik/traefik/v3/pkg/provider/kubernetes/crd/generated/clientset/versioned/fake		coverage: 0.0% of statements
+	github.com/traefik/traefik/v3/pkg/provider/kubernetes/crd/generated/clientset/versioned/scheme		coverage: 0.0% of statements
+	github.com/traefik/traefik/v3/pkg/provider/kubernetes/crd/generated/clientset/versioned/typed/traefikio/v1alpha1		coverage: 0.0% of statements
+	github.com/traefik/traefik/v3/pkg/provider/kubernetes/crd/generated/clientset/versioned/typed/traefikio/v1alpha1/fake		coverage: 0.0% of statements
+	github.com/traefik/traefik/v3/pkg/provider/kubernetes/crd/generated/informers/externalversions		coverage: 0.0% of statements
+?   	github.com/traefik/traefik/v3/pkg/provider/kubernetes/crd/generated/informers/externalversions/internalinterfaces	[no test files]
+	github.com/traefik/traefik/v3/pkg/provider/kubernetes/crd/generated/informers/externalversions/traefikio		coverage: 0.0% of statements
+	github.com/traefik/traefik/v3/pkg/provider/kubernetes/crd/generated/informers/externalversions/traefikio/v1alpha1		coverage: 0.0% of statements
+	github.com/traefik/traefik/v3/pkg/provider/kubernetes/crd/generated/listers/traefikio/v1alpha1		coverage: 0.0% of statements
+	github.com/traefik/traefik/v3/pkg/provider/kubernetes/crd/traefikio/v1alpha1		coverage: 0.0% of statements
+ok  	github.com/traefik/traefik/v3/pkg/provider/kubernetes/gateway	(cached)	coverage: 80.6% of statements
+ok  	github.com/traefik/traefik/v3/pkg/provider/kubernetes/ingress	(cached)	coverage: 73.2% of statements
+ok  	github.com/traefik/traefik/v3/pkg/provider/kubernetes/ingress-nginx	(cached)	coverage: 83.6% of statements
+ok  	github.com/traefik/traefik/v3/pkg/provider/kubernetes/k8s	(cached)	coverage: 68.4% of statements
+ok  	github.com/traefik/traefik/v3/pkg/provider/kubernetes/knative	(cached)	coverage: 45.6% of statements
+ok  	github.com/traefik/traefik/v3/pkg/provider/kv	(cached)	coverage: 21.3% of statements
+ok  	github.com/traefik/traefik/v3/pkg/provider/kv/consul	(cached)	coverage: 30.0% of statements
+	github.com/traefik/traefik/v3/pkg/provider/kv/etcd		coverage: 0.0% of statements
+	github.com/traefik/traefik/v3/pkg/provider/kv/redis		coverage: 0.0% of statements
+	github.com/traefik/traefik/v3/pkg/provider/kv/zk		coverage: 0.0% of statements
+ok  	github.com/traefik/traefik/v3/pkg/provider/nomad	0.062s	coverage: 68.9% of statements
+	github.com/traefik/traefik/v3/pkg/provider/rest		coverage: 0.0% of statements
+ok  	github.com/traefik/traefik/v3/pkg/provider/tailscale	(cached)	coverage: 48.5% of statements
+ok  	github.com/traefik/traefik/v3/pkg/provider/traefik	(cached)	coverage: 75.0% of statements
+ok  	github.com/traefik/traefik/v3/pkg/proxy	0.061s	coverage: 75.0% of statements
+ok  	github.com/traefik/traefik/v3/pkg/proxy/fast	0.908s	coverage: 76.5% of statements
+ok  	github.com/traefik/traefik/v3/pkg/proxy/httputil	0.142s	coverage: 81.9% of statements
+ok  	github.com/traefik/traefik/v3/pkg/redactor	(cached)	coverage: 81.1% of statements
+ok  	github.com/traefik/traefik/v3/pkg/rules	(cached)	coverage: 100.0% of statements
+ok  	github.com/traefik/traefik/v3/pkg/safe	(cached)	coverage: 100.0% of statements
+ok  	github.com/traefik/traefik/v3/pkg/server	16.741s	coverage: 69.8% of statements
+ok  	github.com/traefik/traefik/v3/pkg/server/cookie	(cached)	coverage: 94.4% of statements
+ok  	github.com/traefik/traefik/v3/pkg/server/middleware	(cached)	coverage: 26.2% of statements
+	github.com/traefik/traefik/v3/pkg/server/middleware/tcp		coverage: 0.0% of statements
+ok  	github.com/traefik/traefik/v3/pkg/server/provider	(cached)	coverage: 100.0% of statements
+	github.com/traefik/traefik/v3/pkg/server/recursion		coverage: 0.0% of statements
+ok  	github.com/traefik/traefik/v3/pkg/server/router	(cached)	coverage: 86.7% of statements
+ok  	github.com/traefik/traefik/v3/pkg/server/router/tcp	9.789s	coverage: 74.9% of statements
+ok  	github.com/traefik/traefik/v3/pkg/server/router/udp	(cached)	coverage: 86.8% of statements
+ok  	github.com/traefik/traefik/v3/pkg/server/service	0.623s	coverage: 60.0% of statements
+ok  	github.com/traefik/traefik/v3/pkg/server/service/loadbalancer	(cached)	coverage: 96.6% of statements
+ok  	github.com/traefik/traefik/v3/pkg/server/service/loadbalancer/failover	(cached)	coverage: 84.8% of statements
+ok  	github.com/traefik/traefik/v3/pkg/server/service/loadbalancer/hrw	(cached)	coverage: 94.6% of statements
+ok  	github.com/traefik/traefik/v3/pkg/server/service/loadbalancer/leasttime	(cached)	coverage: 94.6% of statements
+ok  	github.com/traefik/traefik/v3/pkg/server/service/loadbalancer/mirror	(cached)	coverage: 73.2% of statements
+ok  	github.com/traefik/traefik/v3/pkg/server/service/loadbalancer/p2c	(cached)	coverage: 94.2% of statements
+ok  	github.com/traefik/traefik/v3/pkg/server/service/loadbalancer/wrr	(cached)	coverage: 92.5% of statements
+ok  	github.com/traefik/traefik/v3/pkg/server/service/tcp	(cached)	coverage: 76.6% of statements
+ok  	github.com/traefik/traefik/v3/pkg/server/service/udp	(cached)	coverage: 83.0% of statements
+ok  	github.com/traefik/traefik/v3/pkg/tcp	(cached)	coverage: 82.0% of statements
+	github.com/traefik/traefik/v3/pkg/testhelpers		coverage: 0.0% of statements
+ok  	github.com/traefik/traefik/v3/pkg/tls	2.876s	coverage: 49.5% of statements
+	github.com/traefik/traefik/v3/pkg/tls/generate		coverage: 0.0% of statements
+ok  	github.com/traefik/traefik/v3/pkg/types	(cached)	coverage: 37.2% of statements
+ok  	github.com/traefik/traefik/v3/pkg/udp	(cached)	coverage: 83.8% of statements
+	github.com/traefik/traefik/v3/pkg/version		coverage: 0.0% of statements
+	github.com/traefik/traefik/v3/cmd		coverage: 0.0% of statements
+	github.com/traefik/traefik/v3/cmd/gogw-mock		coverage: 0.0% of statements
+	github.com/traefik/traefik/v3/cmd/healthcheck		coverage: 0.0% of statements
+	github.com/traefik/traefik/v3/cmd/internal/gen		coverage: 0.0% of statements
+ok  	github.com/traefik/traefik/v3/cmd/traefik	(cached)	coverage: 5.1% of statements
+	github.com/traefik/traefik/v3/cmd/version		coverage: 0.0% of statements

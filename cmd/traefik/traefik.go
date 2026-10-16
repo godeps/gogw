@@ -311,6 +311,10 @@ func setupServer(staticConfiguration *static.Configuration) (*server.Server, err
 	dialerManager := tcp.NewDialerManager(spiffeX509Source)
 	acmeHTTPHandler := getHTTPChallengeHandler(acmeProviders, httpChallengeProvider)
 	managerFactory := service.NewManagerFactory(*staticConfiguration, routinesPool, observabilityMgr, transportManager, proxyBuilder, acmeHTTPHandler, tlsManager)
+	gogwShutdown, err := configureGogw(managerFactory, routinesPool)
+	if err != nil {
+		return nil, fmt.Errorf("configuring gogw: %w", err)
+	}
 
 	// Router factory
 
@@ -400,7 +404,11 @@ func setupServer(staticConfiguration *static.Configuration) (*server.Server, err
 		}
 	})
 
-	return server.NewServer(routinesPool, serverEntryPointsTCP, serverEntryPointsUDP, watcher, observabilityMgr), nil
+	svr := server.NewServer(routinesPool, serverEntryPointsTCP, serverEntryPointsUDP, watcher, observabilityMgr)
+	if gogwShutdown != nil {
+		svr.AddShutdownHook(gogwShutdown)
+	}
+	return svr, nil
 }
 
 func getHTTPChallengeHandler(acmeProviders []*acme.Provider, httpChallengeProvider http.Handler) http.Handler {

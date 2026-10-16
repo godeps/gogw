@@ -1,0 +1,18 @@
+.PHONY: test-gogw build-gogw test-gogw-process lint-gogw
+
+# The focused targets leave the upstream test/build recipes intact.
+test-gogw:
+	go test -race -count=1 -timeout=90s $(GOGW_TESTFLAGS) ./pkg/gogw/...
+	go test -race -count=1 $(GOGW_TESTFLAGS) ./pkg/server/service -run TestExtensionBuilder
+
+# Dashboard assets are not generated here; use make binary for a release build.
+build-gogw:
+	mkdir -p dist
+	go build -o dist/gogw ./cmd/traefik
+	go build -o dist/gogw-mock ./cmd/gogw-mock
+
+test-gogw-process: build-gogw
+	GOGW_TEST_BINARY=$(CURDIR)/dist/gogw go test -race $(GOGW_TESTFLAGS) -tags=gogwprocess -count=1 -timeout=120s ./pkg/gogw -run TestGatewayProcesses
+
+lint-gogw:
+	golangci-lint run --build-tags=gogwprocess ./pkg/gogw/... ./cmd/gogw-mock/... --new-from-rev=HEAD

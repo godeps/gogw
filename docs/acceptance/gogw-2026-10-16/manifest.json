@@ -1,0 +1,54 @@
+{
+  "status": "PASS for mock gateway acceptance; not production GA",
+  "date": "2026-10-16T16:34:38.276592+08:00",
+  "baseline": "62b1f935f7612dbb730504e8210d8cffe2f4aef7",
+  "graylingSDK": "v0.5.2-0.20261016030758-805a6969c25e",
+  "go": "go version go1.27.2 linux/amd64",
+  "golangciLint": "2.14.0",
+  "filesSHA256": {
+    ".golangci.yml": "dba92c6c3a21c2fc62010c50327d7bd8142c298bb5577cdad58126b33c69f2e7",
+    "Makefile": "88bb1fa28daa6c9e442fd7e40846ff2f1b1d3b70d947937eb090563a392f53ab",
+    "Makefile.gogw": "af205ed502366b34022537f3be697a3476e22212c01ae7ea4980ee6f425d7448",
+    "cmd/gogw-mock/main.go": "9eac6ff7a1382f517d63727c3729fa5db6853de3516760e15cde279631eef598",
+    "cmd/traefik/gogw.go": "1b1d69e416a6bf86788388c7b98f2fad970d19bb6ffe120a9e6b6020893b156b",
+    "cmd/traefik/traefik.go": "d8376ce619239be21695a7e7e29603b079c14fe0b93ce7af86bd90e48ff71b92",
+    "docs/content/contributing/gogw.md": "f4d08046743f824c370dfdeea705f0f32ab7b76efe6abfb6141f21f520034a2c",
+    "docs/mkdocs.yml": "1130ce10dc8d4cc50c42e2afde288b7e4e19248a5d74f57cf4ba6d3d85a78bbb",
+    "go.mod": "8f76f7a01c1c7c6a5d8d48310e2f494855d46657054dd046431051c1b4093578",
+    "go.sum": "de86d855500984f927dc0cb8179f8d5bbca85205b37ce598913002542062863a",
+    "pkg/gogw/agent.go": "dea01424f2e1987674e9379c77bb67eebd826d58c26497f769ad64b4e0f409d7",
+    "pkg/gogw/config.go": "a209d2fd5cab13da8ffe93975fd43f6c8b92360d0423cf5e33fa1339db14434d",
+    "pkg/gogw/gateway.go": "3341f19f39518ecc36e33337e94425ef5bad4e1aefa81ab11d6021f335396053",
+    "pkg/gogw/gateway_test.go": "960e08d2227188dc5641962ada9e8752b6ca6f7274932c26c39e51e52184665c",
+    "pkg/gogw/mock/server.go": "5c426c8d4fe70d6f14ddf25e21183cb0c7bda67cfd7d30ada2ce62057d4bddb0",
+    "pkg/gogw/process_test.go": "8e1e66bf195fa348e489c20a812939df5df8e6cc568d6f620d7702c569d17403",
+    "pkg/gogw/request.go": "830de011e32a17f15967bfb4b87edaab297012d30c00c88f0a8b2016b97b3232",
+    "pkg/gogw/transport.go": "48019dff6ef620bc9ec6b9c5efc83bc2245cb26b7858d2ecb85d48dc79725c03",
+    "pkg/server/extensions.go": "c76e12a7fbce30d632662df1b52f14119288f350f2577a61d0201c8f0e31e422",
+    "pkg/server/server.go": "9225556c3b283e3d841a84bfc0a4eb3c8207e4b48662004ab59de37bbd87d861",
+    "pkg/server/service/extensions.go": "74c7ec18bef4c4ab571348d50a11c5ad7c4b70cb40f5434f6e37476a7d09a660",
+    "pkg/server/service/extensions_test.go": "9642b2970fa215b1c5975ae06401e53750cb0c64e30a2bb4a864fa110e27e1ea",
+    "pkg/server/service/managerfactory.go": "6ffb60d0f12ea33a0a9848d334dc497635698d2462a4913efaf0467596858751"
+  },
+  "results": {
+    "mockGatewayRace": "PASS",
+    "realGatewayProcesses": "PASS",
+    "upstreamShortUnitTests": "PASS (proxy environment removed, -p=2)",
+    "fullLint": "PASS",
+    "taggedLint": "PASS"
+  },
+  "testedPackages": 110,
+  "commands": [
+    "make test-gogw GOGW_TESTFLAGS=-v",
+    "make test-gogw-process GOGW_TESTFLAGS=-v",
+    "env -u HTTP_PROXY -u HTTPS_PROXY -u http_proxy -u https_proxy -u ALL_PROXY -u all_proxy make test-unit TESTFLAGS=\"-short -timeout=3m -p=2\"",
+    "PATH=/tmp/gogw-tools:$PATH make lint"
+  ],
+  "notValidated": [
+    "production Grayling discovery and lease CAS",
+    "release quorum and distributed activation",
+    "persisted emergency revocations and active stream cancellation",
+    "production network and co-container supervisor",
+    "capacity profile and security key rotation"
+  ]
+}

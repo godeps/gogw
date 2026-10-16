@@ -53,6 +53,9 @@ linters:
     - wsl_v5 # Too strict
 
   settings:
+    modernize:
+      disable:
+        - embedlit # Keep upstream Go 1.26 literals without a fork-wide formatting diff.
     depguard:
       rules:
         main:
@@ -83,7 +86,7 @@ linters:
     gomoddirectives:
       toolchain-pattern: go1\.\d+\.\d+$
       tool-forbidden: true
-      go-version-pattern: ^1\.\d+(\.0)?$
+      go-version-pattern: ^1\.\d+(\.\d+)?$
       replace-local: true
       replace-allow-list:
         - github.com/abbot/go-http-auth

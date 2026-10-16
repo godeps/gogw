@@ -1,0 +1,8 @@
+fatal: No names found, cannot describe anything.
+/home/vipas/workspace/saker-ai/gogw/script/validate-vendor.sh
+checking go modules for unintentional changes...
+Congratulations! All go modules changes are done the right way.
+/home/vipas/workspace/saker-ai/gogw/script/validate-misspell.sh
+Congratulations!  All Go source files and docs have been checked for common misspellings.
+/home/vipas/workspace/saker-ai/gogw/script/validate-shell-script.sh
+/tmp/gogw-tools/shellcheck
