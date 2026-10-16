@@ -1,0 +1,93 @@
+$ git log -1 --format='%H %s' -- pkg/middlewares/ingressnginx/snippet
+759515bec1b9f628b21ea8968ef63da853be5e29 Sanitize rewritten target on ingress-nginx provider
+
+$ git status --short -- pkg/middlewares/ingressnginx pkg/middlewares/forwardauth pkg/proxy
+(no output above means the package and its dependencies are unmodified)
+
+## Cause, in the Go 1.27.2 standard library
+
+net/http/httptest/server.go, httptest.Server.Close():
+
+
+	// Not part of httptest.Server's correctness, but assume most
+	// users of httptest.Server will be using the standard
+	// transport, so help them out and close any idle connections for them.
+	if t, ok := http.DefaultTransport.(closeIdleTransport); ok {
+		t.CloseIdleConnections()
+	}
+
+	// Also close the client idle connections.
+	if s.client != nil {
+		if t, ok := s.client.Transport.(closeIdleTransport); ok {
+			t.CloseIdleConnections()
+		}
+	}
+
+net/http/transport.go, Transport.CloseIdleConnections():
+
+// CloseIdleConnections closes any connections which were previously
+// connected from previous requests but are now sitting idle in
+// a "keep-alive" state. It does not interrupt any connections currently
+// in use.
+func (t *Transport) CloseIdleConnections() {
+	t.nextProtoOnce.Do(t.onceSetNextProtoDefaults)
+	t.idleMu.Lock()
+	m := t.idleConn
+	t.idleConn = nil
+	t.closeIdle = true // close newly idle connections
+	t.idleLRU = connLRU{}
+	t.idleMu.Unlock()
+	for _, conns := range m {
+		for _, pconn := range conns {
+			pconn.close(errCloseIdleConns)
+		}
+	}
+	t.connsPerHostMu.Lock()
+	t.dialsInProgress.all(func(w *wantConn) {
+		if w.cancelCtx != nil && !w.waiting() {
+			w.cancelCtx()
+		}
+	})
+	t.connsPerHostMu.Unlock()
+
+That doc comment predates the branch under it: a dial in progress that has not been
+handed to its caller yet is cancelled with the same error, so a request fails even
+though the connection was never idle.
+
+Every parallel subtest of Test_Directives defers authServer.Close() on its own
+httptest.Server, and the forward-auth middleware dials through the process-global
+http.DefaultTransport. Closing any one server therefore closes the shared idle
+pool and cancels the dials in progress of the subtests that are still running,
+so those subtests answer 500 instead of 200 or 302. Concurrency decides the
+outcome; nothing in pkg/gogw is in that process.
+
+## Isolation: the unmodified package passes on its own
+
+$ go test -count=1 ./pkg/middlewares/ingressnginx/snippet/
+run 1: ok  	github.com/traefik/traefik/v3/pkg/middlewares/ingressnginx/snippet	0.104s
+run 2: ok  	github.com/traefik/traefik/v3/pkg/middlewares/ingressnginx/snippet	0.117s
+run 3: ok  	github.com/traefik/traefik/v3/pkg/middlewares/ingressnginx/snippet	0.111s
+
+## Reproduction: the same package, no gateway code, repeated iterations
+
+$ go test -count=10 ./pkg/middlewares/ingressnginx/snippet/
+{"level":"error","error":"Get \"http://127.0.0.1:13577/auth\": net/http: HTTP/1.x transport connection broken: http: CloseIdleConnections called","time":"2026-10-16T20:59:21+08:00","message":"Error calling http://127.0.0.1:13577/auth"}
+{"level":"error","error":"Get \"http://127.0.0.1:14905/auth\": net/http: HTTP/1.x transport connection broken: http: CloseIdleConnections called","time":"2026-10-16T20:59:21+08:00","message":"Error calling http://127.0.0.1:14905/auth"}
+--- FAIL: Test_Directives (0.00s)
+FAIL
+FAIL	github.com/traefik/traefik/v3/pkg/middlewares/ingressnginx/snippet	0.263s
+FAIL
+EXIT=1
+
+## Same signature in the full unit-suite run of this tree
+
+$ make test-unit TESTFLAGS='-short -timeout=3m -p=2 -count=1'
+5975:{"level":"error","error":"Get \"http://127.0.0.1:13289/auth\": net/http: HTTP/1.x transport connection broken: http: CloseIdleConnections called","time":"2026-10-16T20:52:34+08:00","message":"Error calling http://127.0.0.1:13289/auth"}
+5977:{"level":"error","error":"Get \"http://127.0.0.1:11883/auth\": net/http: HTTP/1.x transport connection broken: http: CloseIdleConnections called","time":"2026-10-16T20:52:34+08:00","message":"Error calling http://127.0.0.1:11883/auth"}
+5978:{"level":"error","error":"Get \"http://127.0.0.1:12427/auth\": net/http: HTTP/1.x transport connection broken: http: CloseIdleConnections called","time":"2026-10-16T20:52:34+08:00","message":"Error calling http://127.0.0.1:12427/auth"}
+6021:--- FAIL: Test_Directives (0.01s)
+6180:FAIL	github.com/traefik/traefik/v3/pkg/middlewares/ingressnginx/snippet	0.135s
+EXIT=2, only pkg/middlewares/ingressnginx/snippet failed
+
+The suite was re-run unchanged on the same tree; logs/unit.txt is that run and
+logs/unit-packages.txt is its package-level summary.

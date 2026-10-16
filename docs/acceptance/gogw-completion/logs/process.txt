@@ -1,0 +1,8 @@
+$ make test-gogw-process
+fatal: No names found, cannot describe anything.
+mkdir -p dist
+go build -o dist/gogw ./cmd/traefik
+go build -o dist/gogw-mock ./cmd/gogw-mock
+GOGW_TEST_BINARY=/home/vipas/workspace/saker-ai/gogw/.claude/worktrees/gogw-completion/dist/gogw go test -race  -tags=gogwprocess -count=1 -timeout=5m ./pkg/gogw -run TestGatewayProcesses
+ok  	github.com/traefik/traefik/v3/pkg/gogw	8.714s
+EXIT=0

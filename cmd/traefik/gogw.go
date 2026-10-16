@@ -26,5 +26,7 @@ func configureGogw(factory *service.ManagerFactory, pool *safe.Pool) (func(), er
 	}
 	factory.AddServiceBuilder(gateway)
 	pool.GoCtx(func(ctx context.Context) { log.Ctx(ctx).Info().Msg("Starting Grayling Agent"); gateway.Run(ctx) })
-	return gateway.Drain, nil
+	// Shutdown releases the lease as well as draining, so the control plane can
+	// replace this instance at once instead of waiting for the lease to expire.
+	return gateway.Shutdown, nil
 }

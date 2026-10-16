@@ -1,0 +1,9 @@
+$ make lint
+fatal: No names found, cannot describe anything.
+golangci-lint run
+0 issues.
+EXIT=0
+
+$ golangci-lint run --build-tags=gogwprocess ./pkg/gogw/... ./cmd/gogw-mock/... .
+0 issues.
+EXIT=0

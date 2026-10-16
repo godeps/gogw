@@ -1,0 +1,8 @@
+$ make test-gogw
+fatal: No names found, cannot describe anything.
+go test -race -count=1 -timeout=10m  ./pkg/gogw/...
+ok  	github.com/traefik/traefik/v3/pkg/gogw	104.571s
+ok  	github.com/traefik/traefik/v3/pkg/gogw/mock	6.235s
+go test -race -count=1  ./pkg/server/service -run TestExtensionBuilder
+ok  	github.com/traefik/traefik/v3/pkg/server/service	1.174s
+EXIT=0

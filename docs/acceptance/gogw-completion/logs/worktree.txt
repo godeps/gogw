@@ -1,0 +1,35 @@
+$ git diff --check
+EXIT=0
+
+$ git status --short --branch
+## gogw-completion
+ M Makefile.gogw
+ M cmd/gogw-mock/main.go
+ M cmd/traefik/gogw.go
+ M docs/content/contributing/gogw.md
+ M pkg/gogw/agent.go
+ M pkg/gogw/config.go
+ M pkg/gogw/gateway.go
+ M pkg/gogw/gateway_test.go
+ M pkg/gogw/mock/server.go
+ M pkg/gogw/process_test.go
+ M pkg/gogw/request.go
+ M pkg/gogw/transport.go
+?? .omc/
+?? docs/acceptance/gogw-completion/
+?? pkg/gogw/discovery.go
+?? pkg/gogw/dispatch.go
+?? pkg/gogw/harness_test.go
+?? pkg/gogw/identity.go
+?? pkg/gogw/metrics.go
+?? pkg/gogw/mock/release.go
+?? pkg/gogw/mock/server_test.go
+?? pkg/gogw/mock/session.go
+?? pkg/gogw/prepare.go
+?? pkg/gogw/protocol.go
+?? pkg/gogw/revocation.go
+?? pkg/gogw/routing_test.go
+?? pkg/gogw/session.go
+?? pkg/gogw/state.go
+?? pkg/gogw/ticket.go
+?? pkg/gogw/view.go

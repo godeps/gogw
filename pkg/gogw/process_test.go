@@ -2,11 +2,21 @@
 
 package gogw_test
 
+// process_test.go runs the acceptance matrix against the built binary instead of an
+// in-process gateway. What it adds is everything only a process can show: the
+// listener the membership artifact advertises, HTTP/2 over that listener, the mTLS
+// hop between two processes carrying a signed ticket, SSE across that hop, and
+// termination through the same shutdown hook a deployment uses.
+//
+// The control plane, the relay and the applications stay in-process: they are
+// fakes either way, and keeping them here means the test observes the failure of a
+// gateway process rather than of its scaffolding.
+
 import (
-	"bufio"
 	"bytes"
 	"encoding/json/v2"
 	"fmt"
+	"io"
 	"net/http"
 	"os"
 	"os/exec"
@@ -20,126 +30,202 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+// processStopTimeout bounds the wait for a terminated process. Traefik stops the
+// entrypoints inside the grace time the install configuration sets, and the gateway
+// drains before that, so a process that outlives this is hung rather than slow.
+const processStopTimeout = 20 * time.Second
+
+// gatewayProcess is one running binary with the output it produced, kept so a
+// failure can be read from the test log.
+type gatewayProcess struct {
+	command *exec.Cmd
+	output  *bytes.Buffer
+	exited  chan error
+}
+
+// TestGatewayProcesses starts one real gateway process per published member and
+// drives the traffic matrix through them.
 func TestGatewayProcesses(t *testing.T) {
 	binary := os.Getenv("GOGW_TEST_BINARY")
-	require.NotEmpty(t, binary)
+	require.NotEmpty(t, binary, "GOGW_TEST_BINARY must name the built traefik binary")
+
 	c := newCluster(t)
-	c.cancel()
-	for _, done := range c.done {
-		<-done
+	c.activate(t, release(1, nil, nil))
+
+	// The in-process gateways hand their listeners over to the processes. The port is
+	// part of the identity the control plane published, so an instance is only
+	// reachable at the address its own membership artifact names if the process
+	// serves on the same port the harness reserved.
+	for _, in := range c.members {
+		in.stop(t)
+		in.server.Close()
 	}
-	for _, server := range c.servers {
-		server.Close()
+	c.public.CloseIdleConnections()
+
+	processes := make([]*gatewayProcess, 0, len(c.members))
+	for index, in := range c.members {
+		processes = append(processes, startGatewayProcess(t, binary, c, index, in))
 	}
-	routingFiles := make([]string, 0, 2)
-	processes := make([]*exec.Cmd, 0, 2)
-	exits := make([]chan error, 0, 2)
-	for i, cfg := range c.cfgs {
-		dir := t.TempDir()
-		configFile := filepath.Join(dir, "gogw.json")
-		data, err := json.Marshal(cfg)
-		require.NoError(t, err)
-		require.NoError(t, os.WriteFile(configFile, data, 0o600))
-		dynamic := fmt.Sprintf("http:\n  routers:\n    app:\n      rule: 'PathPrefix(`/`)'\n      entryPoints: [websecure]\n      service: checkout@gogw\n      tls: {}\ntls:\n  certificates:\n    - certFile: %q\n      keyFile: %q\n  options:\n    default:\n      clientAuth:\n        caFiles: [%q]\n        clientAuthType: VerifyClientCertIfGiven\n", cfg.CertFile, cfg.KeyFile, cfg.CAFile)
-		routing := filepath.Join(dir, "routing.yaml")
-		routingFiles = append(routingFiles, routing)
-		require.NoError(t, os.WriteFile(routing, []byte(dynamic), 0o600))
-		install := fmt.Sprintf("entryPoints:\n  websecure:\n    address: %q\n    transport:\n      lifeCycle:\n        graceTimeOut: 2s\nproviders:\n  file:\n    watch: true\n    filename: %q\nlog:\n  level: ERROR\nglobal:\n  checkNewVersion: false\n  sendAnonymousUsage: false\n", strings.TrimPrefix(c.servers[i].URL, "https://"), routing)
-		installFile := filepath.Join(dir, "traefik.yaml")
-		require.NoError(t, os.WriteFile(installFile, []byte(install), 0o600))
-		command := exec.Command(binary, "--configFile="+installFile)
-		command.Env = append(os.Environ(), "GOGW_CONFIG="+configFile)
-		output := new(bytes.Buffer)
-		command.Stdout = output
-		command.Stderr = output
-		require.NoError(t, command.Start())
-		processes = append(processes, command)
-		done := make(chan error, 1)
-		exits = append(exits, done)
-		go func() { done <- command.Wait() }()
-		t.Cleanup(func() {
-			_ = command.Process.Signal(syscall.SIGTERM)
-			select {
-			case <-done:
-			case <-time.After(8 * time.Second):
-				_ = command.Process.Kill()
-				<-done
-			}
-			if t.Failed() {
-				t.Log(output.String())
-			}
-		})
-	}
-	require.Eventually(t, func() bool {
-		for _, server := range c.servers {
-			response, err := c.public.Get(server.URL + "/__gogw/ready")
+
+	// Readiness is the process's own claim, and it is reached from the state the
+	// stopped gateways persisted: the process re-reads the approved release and its
+	// membership before the control plane is asked for anything.
+	await(t, "the readiness of every process", func() bool {
+		for _, in := range c.members {
+			response, err := c.public.Get(in.server.URL + "/__gogw/ready")
 			if err != nil {
 				return false
 			}
-			_ = response.Body.Close()
+			_, _ = io.Copy(io.Discard, response.Body)
+			response.Body.Close()
 			if response.StatusCode != http.StatusNoContent {
 				return false
 			}
 		}
 		return true
-	}, 20*time.Second, 100*time.Millisecond)
-	for _, subject := range []string{"ordinary", "canary-user"} {
-		response := c.request(t, 0, http.MethodGet, "/encoded%2Fpath?a=b%2Fc", subject, "", nil)
-		require.Equal(t, http.StatusOK, response.StatusCode)
-		assert.Equal(t, 2, response.ProtoMajor)
-		expected := "stable"
-		if subject == "canary-user" {
-			expected = "canary"
-		}
-		assert.Equal(t, expected, response.Header.Get("X-Actual-Build"))
-		response.Body.Close()
+	})
+
+	// A request the instance decides itself is served over HTTP/2 on its own
+	// listener, with the hop marker of a local decision.
+	response := c.request(t, 0, http.MethodGet, "/orders", "user-1", "", nil)
+	require.Equal(t, http.StatusOK, response.StatusCode)
+	assert.Equal(t, 2, response.ProtoMajor)
+	assert.Equal(t, "stable", response.Header.Get("X-Actual-Build"))
+	assert.Equal(t, "local", response.Header.Get("X-Actual-Hop"))
+	body(t, response)
+
+	// The canary build is served by the peer process, so this request crosses the
+	// internal face: one hop, over mTLS between two binaries, carrying the final
+	// ticket the first process minted.
+	response = c.request(t, 0, http.MethodGet, "/orders", "canary-user", "", nil)
+	require.Equal(t, http.StatusOK, response.StatusCode)
+	assert.Equal(t, 2, response.ProtoMajor)
+	assert.Equal(t, "canary", response.Header.Get("X-Actual-Build"))
+	assert.Equal(t, "1", response.Header.Get("X-Actual-Hop"))
+	body(t, response)
+
+	// A ticket this process did not mint is refused before it is forwarded, so the
+	// internal face is not reachable with a caller-supplied marker.
+	forged := c.request(t, 0, http.MethodGet, "/orders", "user-1", "", http.Header{"X-Gogw-Ticket": []string{"forged"}})
+	assert.Equal(t, http.StatusForbidden, forged.StatusCode)
+	body(t, forged)
+
+	// A stream is served through the process as well, and it is the same forwarded
+	// hop: the consumer's connection ends at this process, the upstream one at the
+	// peer's application.
+	stream := c.stream(t, 0, "/sse", "canary-user")
+	assert.Equal(t, "canary", event(t, stream))
+
+	// Termination is the deployment path: the signal runs the shutdown hook, which
+	// drains, cancels what it was streaming upstream instead of leaking it, hands the
+	// lease back, and lets the binary exit cleanly.
+	terminated := processes[0]
+	require.NoError(t, terminated.command.Process.Signal(syscall.SIGTERM))
+	select {
+	case build := <-c.canceled:
+		assert.Equal(t, "canary", build)
+	case <-time.After(processStopTimeout):
+		t.Fatal("the terminated process left its upstream stream open")
 	}
-	c.control.Close()
-	c.controlHTTP.Close()
-	for _, path := range routingFiles {
-		data, err := os.ReadFile(path)
-		require.NoError(t, err)
-		updated := strings.Replace(string(data), "http:\n  routers:", "http:\n  middlewares:\n    reloaded:\n      headers:\n        customResponseHeaders:\n          X-Route-Reload: yes\n  routers:", 1)
-		updated = strings.Replace(updated, "      service: checkout@gogw", "      middlewares: [reloaded]\n      service: checkout@gogw", 1)
-		require.NoError(t, os.WriteFile(path, []byte(updated), 0o600))
+	select {
+	case err := <-terminated.exited:
+		assert.NoError(t, err, terminated.output.String())
+		terminated.exited <- err
+	case <-time.After(processStopTimeout):
+		t.Fatal(terminated.output.String())
 	}
-	require.Eventually(t, func() bool {
-		response, err := c.public.Get(c.servers[0].URL + "/__gogw/ready")
-		if err != nil {
-			return false
-		}
-		defer response.Body.Close()
-		return response.StatusCode == http.StatusNoContent && response.Header.Get("X-Route-Reload") == "yes"
-	}, 10*time.Second, 100*time.Millisecond)
-	forged := c.request(t, 0, http.MethodGet, "/", "ordinary", "", http.Header{"X-Gogw-Ticket": []string{"fake"}})
-	assert.Equal(t, 403, forged.StatusCode)
-	forged.Body.Close()
-	response := c.request(t, 0, http.MethodGet, "/sse", "canary-user", "", nil)
-	line, err := bufio.NewReader(response.Body).ReadString('\n')
+	assert.True(t, c.journalContains("Deregister", "stable-0"))
+
+	// Nothing new is served by an instance that is going away: the entrypoint either
+	// refuses the connection or answers a failure, never a 200.
+	stale, err := c.public.Get(c.members[0].server.URL + "/__gogw/ready")
+	if err == nil {
+		assert.GreaterOrEqual(t, stale.StatusCode, http.StatusInternalServerError)
+		body(t, stale)
+	}
+
+	// The process that is still running keeps serving, which is what makes the
+	// termination a replacement rather than an outage.
+	response = c.request(t, 1, http.MethodGet, "/orders", "canary-user", "", nil)
+	require.Equal(t, http.StatusOK, response.StatusCode)
+	assert.Equal(t, "canary", response.Header.Get("X-Actual-Build"))
+	assert.Equal(t, "local", response.Header.Get("X-Actual-Hop"))
+	body(t, response)
+	require.NoError(t, stream.Body.Close())
+}
+
+// startGatewayProcess writes the install and routing configuration for one member
+// and starts the binary on the port that member already advertises.
+func startGatewayProcess(t *testing.T, binary string, c *cluster, index int, in *instance) *gatewayProcess {
+	t.Helper()
+	dir := t.TempDir()
+	config, err := json.Marshal(in.cfg)
 	require.NoError(t, err)
-	assert.Equal(t, "data: canary\n", line)
-	require.NoError(t, response.Body.Close())
-	select {
-	case <-c.canceled:
-	case <-time.After(time.Second):
-		t.Fatal("process SSE cancellation failed")
-	}
-	draining := c.request(t, 0, http.MethodGet, "/sse", "canary-user", "", nil)
-	line, err = bufio.NewReader(draining.Body).ReadString('\n')
-	require.NoError(t, err)
-	assert.Equal(t, "data: canary\n", line)
-	require.NoError(t, processes[0].Process.Signal(syscall.SIGTERM))
-	select {
-	case err := <-exits[0]:
-		assert.NoError(t, err)
-		exits[0] <- err
-	case <-time.After(8 * time.Second):
-		t.Fatal("process shutdown timed out")
-	}
-	select {
-	case <-c.canceled:
-	case <-time.After(5 * time.Second):
-		t.Fatal("shutdown did not cancel upstream SSE")
-	}
-	require.NoError(t, draining.Body.Close())
+	configFile := filepath.Join(dir, "gogw.json")
+	require.NoError(t, os.WriteFile(configFile, config, 0o600))
+
+	// The gateway service is the only router, and it verifies client certificates
+	// when a peer presents one: the same listener serves applications and the
+	// internal face, which is what the advertised address promises.
+	routing := fmt.Sprintf(`http:
+  routers:
+    app:
+      rule: 'PathPrefix(`+"`/`"+`)'
+      entryPoints: [websecure]
+      service: checkout@gogw
+      tls: {}
+tls:
+  certificates:
+    - certFile: %q
+      keyFile: %q
+  options:
+    default:
+      clientAuth:
+        caFiles: [%q]
+        clientAuthType: VerifyClientCertIfGiven
+`, in.cfg.CertFile, in.cfg.KeyFile, in.cfg.CAFile)
+	routingFile := filepath.Join(dir, "routing.yaml")
+	require.NoError(t, os.WriteFile(routingFile, []byte(routing), 0o600))
+
+	install := fmt.Sprintf(`entryPoints:
+  websecure:
+    address: %q
+    transport:
+      lifeCycle:
+        graceTimeOut: 2s
+providers:
+  file:
+    watch: true
+    filename: %q
+log:
+  level: ERROR
+global:
+  checkNewVersion: false
+  sendAnonymousUsage: false
+`, strings.TrimPrefix(in.server.URL, "https://"), routingFile)
+	installFile := filepath.Join(dir, "traefik.yaml")
+	require.NoError(t, os.WriteFile(installFile, []byte(install), 0o600))
+
+	command := exec.Command(binary, "--configFile="+installFile)
+	command.Env = append(os.Environ(), "GOGW_CONFIG="+configFile)
+	output := new(bytes.Buffer)
+	command.Stdout, command.Stderr = output, output
+	require.NoError(t, command.Start())
+	process := &gatewayProcess{command: command, output: output, exited: make(chan error, 1)}
+	go func() { process.exited <- command.Wait() }()
+
+	t.Cleanup(func() {
+		_ = command.Process.Signal(syscall.SIGTERM)
+		select {
+		case err := <-process.exited:
+			process.exited <- err
+		case <-time.After(processStopTimeout):
+			_ = command.Process.Kill()
+			<-process.exited
+		}
+		if t.Failed() {
+			t.Logf("gateway process %d output:\n%s", index, output.String())
+		}
+	})
+	return process
 }

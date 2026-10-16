@@ -1,0 +1,40 @@
+# gogw acceptance environment
+
+captured: 2026-10-16T13:01:38Z (UTC), 2026-10-16T21:01:38+0800 (local)
+host: vipas Linux 6.8.0-138-generic x86_64
+cpu: 80 cores
+worktree: /home/vipas/workspace/saker-ai/gogw/.claude/worktrees/gogw-completion
+branch: gogw-completion
+head: 82671d1afce49bd5bdc6dd266e12e6b4706e651a
+go directive: 1.27.2
+path: /tmp/gogw-tools:/home/vipas/go/bin:/usr/local/go/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+
+## module pin
+64:	github.com/saker-ai/grayling v0.5.2-0.20261016030758-805a6969c25e
+replace blocks: 2; mentions of the pinned SDK inside them: 0
+
+## toolchain
+go version go1.27.2 linux/amd64
+golangci-lint has version 2.14.0 built with go1.27.2 from (unknown, modified: ?, mod sum: "h1:ot8QffRa4LzAAEgtvNYrVs9esxQ7xoTwoAv6uhp4ngA=") on (unknown)
+misspell: dev
+shellcheck: version: 0.9.0
+
+## sibling repository (not read for unpublished API, not modified here)
+path: /home/vipas/workspace/saker-ai/grayling
+HEAD: 805a6969c25ec0fb18a01be1ae8ca7db255518c1
+dirty entries: 140 (other people's uncommitted work)
+the pinned pseudo-version suffix matches that HEAD commit, and the worktree of this task never writes outside its own directory
+
+## proxy environment
+HTTP_PROXY=http://127.0.0.1:7890
+HTTPS_PROXY=http://127.0.0.1:7890
+http_proxy=http://127.0.0.1:7890
+https_proxy=http://127.0.0.1:7890
+ALL_PROXY=<unset>
+all_proxy=<unset>
+NO_PROXY=<unset>
+no_proxy=<unset>
+the acceptance commands unset the proxy variables, because the local control plane and the loopback applications must be reached directly
+
+## docker
+28.1.1

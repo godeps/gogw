@@ -1,0 +1,10 @@
+$ make validate-files   # run with every deliverable staged, so misspell sees the new docs
+fatal: No names found, cannot describe anything.
+/home/vipas/workspace/saker-ai/gogw/.claude/worktrees/gogw-completion/script/validate-vendor.sh
+checking go modules for unintentional changes...
+Congratulations! All go modules changes are done the right way.
+/home/vipas/workspace/saker-ai/gogw/.claude/worktrees/gogw-completion/script/validate-misspell.sh
+Congratulations!  All Go source files and docs have been checked for common misspellings.
+/home/vipas/workspace/saker-ai/gogw/.claude/worktrees/gogw-completion/script/validate-shell-script.sh
+/tmp/gogw-tools/shellcheck
+EXIT=0
